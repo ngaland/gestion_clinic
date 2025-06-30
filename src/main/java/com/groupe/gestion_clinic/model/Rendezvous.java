@@ -25,8 +25,8 @@ public class Rendezvous extends AbstractEntity {
     @JoinColumn(name = "patientId")
     private Patient patient;
 
-    @OneToMany(mappedBy = "rendezvous")
-    private List<Facture> facture;
+/*    @OneToMany(mappedBy = "rendezvous")
+    private List<Facture> facture;*/
 
     @OneToMany(mappedBy = "rendezvous")
     private List<Prescription> prescription;
