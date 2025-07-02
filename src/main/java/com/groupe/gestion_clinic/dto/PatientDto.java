@@ -10,6 +10,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
+
 @Getter @Setter
 @Builder
 @NoArgsConstructor
@@ -27,7 +29,7 @@ public class PatientDto {
     @Email
     private String email;
 
-    //@PastOrPresent
+    @PastOrPresent
     private LocalDate dateNaissance;
 
     @Pattern(regexp = "[0-9]{8,12}",message = "Le numéro de téléphone doit contenir entre 8 et 12 chiffres")
