@@ -21,6 +21,12 @@ import java.util.List;
 @AllArgsConstructor
 public class Patient extends AbstractEntity{
 
+    private String nom;
+
+    private String prenom;
+
+    private String email;
+
     private LocalDate dateNaissance;
 
     private String telephone;

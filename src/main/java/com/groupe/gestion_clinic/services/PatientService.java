@@ -11,7 +11,7 @@ public interface PatientService {
     PatientDto updatePatient(Integer id ,PatientDto patientDto);
     PatientDto findById(Integer id);
     List<PatientDto> findAll();
-    void deletePatient(Integer id);
+    PatientDto deletePatient(Integer id);
 
     List<PrescriptionDto> getPatientPrescriptionsHistory(Integer patientId);
 

@@ -70,16 +70,18 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public void deletePatient(Integer id) {
+    public PatientDto deletePatient(Integer id) {
         if(id == null) {
-            return;
-        } else if (!patientRepository.existsById(id)) {
-            throw new EntityNotFoundException("Patient with id " + id + " not found");
-        }else  {
-            patientRepository.deleteById(id);
-
+            return null;
         }
 
+        Patient patient =
+                        patientRepository
+                                .findById(id)
+                                .orElseThrow(
+                                    ()->new EntityNotFoundException("Patient with id " + id + " not found")
+                                );
+        return PatientDto.fromEntity(patient);
     }
 
     @Override
