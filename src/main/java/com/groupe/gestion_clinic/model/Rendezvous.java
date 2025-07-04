@@ -35,6 +35,7 @@ public class Rendezvous extends AbstractEntity {
     @JoinColumn(name = "patientId")
     private Patient patient;
 
+    private StatutRendezVous statut;
 
     @OneToMany(mappedBy = "rendezvous")
     private List<Prescription> prescription;
