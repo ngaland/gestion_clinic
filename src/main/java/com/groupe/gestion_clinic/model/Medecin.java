@@ -28,4 +28,7 @@ public class Medecin extends Utilisateur{
     @OneToMany(mappedBy = "medecin")
     private List<Disponibilites> disponibles;
 
+    @OneToMany(mappedBy = "medecin")
+    private List<Rendezvous> rendezvous;
+
 }

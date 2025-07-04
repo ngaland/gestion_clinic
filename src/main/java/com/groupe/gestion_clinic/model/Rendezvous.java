@@ -1,16 +1,14 @@
 package com.groupe.gestion_clinic.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,12 +19,22 @@ import java.util.List;
 @AllArgsConstructor
 public class Rendezvous extends AbstractEntity {
 
+
+    private LocalDateTime dateHeureDebut;
+
+    private LocalDateTime dateHeureFin;
+
+    private String motif;
+
+    private String salle;
+
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;
 
-/*    @OneToMany(mappedBy = "rendezvous")
-    private List<Facture> facture;*/
 
     @OneToMany(mappedBy = "rendezvous")
     private List<Prescription> prescription;
@@ -34,4 +42,8 @@ public class Rendezvous extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "secretaireId")
     private Secretaire secretaire;
+
+    @ManyToOne
+    @JoinColumn(name = "medecinId")
+    private Medecin medecin;
 }
