@@ -2,17 +2,24 @@ package com.groupe.gestion_clinic.dto.requestDto;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RendezvousRequestDto {
 
     @NotNull
-    private Long patientId;
+    private Integer patientId;
 
     @NotNull
-    private Long medecinId;
+    private Integer medecinId;
 
     @Future
     @NotNull
@@ -22,5 +29,6 @@ public class RendezvousRequestDto {
     private Duration duree;
 
     private String motif;
+
     private String salle;
 }

@@ -1,11 +1,255 @@
 package com.groupe.gestion_clinic.services.serviceImpl;
 
+import com.groupe.gestion_clinic.dto.RendezvousDto;
+import com.groupe.gestion_clinic.dto.RendezvousSearchDto;
+import com.groupe.gestion_clinic.dto.requestDto.RendezvousRequestDto;
+import com.groupe.gestion_clinic.exceptions.BusinessException;
+import com.groupe.gestion_clinic.exceptions.ConflictException;
+import com.groupe.gestion_clinic.exceptions.NotFoundException;
+import com.groupe.gestion_clinic.model.Medecin;
+import com.groupe.gestion_clinic.model.Patient;
+import com.groupe.gestion_clinic.model.Rendezvous;
+import com.groupe.gestion_clinic.model.StatutRendezVous;
+import com.groupe.gestion_clinic.repositories.MedecinRepository;
+import com.groupe.gestion_clinic.repositories.PatientRepository;
 import com.groupe.gestion_clinic.repositories.RendezvousRepository;
+import com.groupe.gestion_clinic.services.RendezvousService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RendezvousServiceImpl {
+public class RendezvousServiceImpl implements RendezvousService {
+
     private final RendezvousRepository rendezvousRepository;
+    private final PatientRepository patientRepository;
+    private final MedecinRepository medecinRepository;
+
+    @Override
+    public RendezvousDto createRendezVous(RendezvousRequestDto requestDto) {
+
+        // recuperer patient et medecin s'ils existent
+        Patient patient = patientRepository.findById(requestDto.getMedecinId())
+                .orElseThrow(() -> new NotFoundException("Patient non trouvé"));
+
+        Medecin medecin = medecinRepository.findById(requestDto.getMedecinId())
+                .orElseThrow(() -> new NotFoundException("Médecin non trouvé"));
+
+        LocalDateTime start = requestDto.getDateHeureDebut();
+        LocalDateTime end = start.plus(requestDto.getDuree());
+
+        // Vérification des conflits
+        checkRendezVousConflict(requestDto.getMedecinId(), start, end);
+        checkPatientAvailability(requestDto.getPatientId(), start.toLocalDate());
+
+        // Création du rendez-vous
+        Rendezvous rendezVous = new Rendezvous();
+        rendezVous.setPatient(patient);
+        rendezVous.setMedecin(medecin);
+        rendezVous.setDateHeureDebut(start);
+        rendezVous.setDateHeureFin(end);
+        rendezVous.setMotif(requestDto.getMotif());
+        rendezVous.setSalle(requestDto.getSalle());
+        rendezVous.setStatut(StatutRendezVous.PLANIFIER);
+
+        // sauvegarder le rendezvous
+        Rendezvous savedRendezVous = rendezvousRepository.save(rendezVous);
+
+        // Notification
+        // todo ..................
+        return RendezvousDto.fromEntity(savedRendezVous);
+    }
+
+    @Override
+    public RendezvousDto updateRendezVous(Integer id, RendezvousRequestDto requestDto) {
+
+        Rendezvous existingRendezVous = rendezvousRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Rendez-vous non trouvé"));
+
+        // Vérification si modification des dates
+        if (!existingRendezVous.getDateHeureDebut().equals(requestDto.getDateHeureDebut())) {
+            LocalDateTime newStart = requestDto.getDateHeureDebut();
+            LocalDateTime newEnd = newStart.plus(requestDto.getDuree());
+
+            checkRendezVousConflict(requestDto.getMedecinId(), newStart, newEnd);
+            checkPatientAvailability(requestDto.getPatientId(), newStart.toLocalDate());
+        }
+        return null;
+    }
+
+    @Override
+    public Void cancelRendezVous(Integer id) {
+
+        Rendezvous rendezVous = rendezvousRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Rendez-vous non trouvé"));
+
+        /*
+         * Annulation impossible moins de 24h avant le rendez-vous”
+         * "le rendez-vous est demain à 14h
+         *       aujourd’hui il est 13h ==> annulation possible
+         *
+         * " le rendez-vous est demain à 14h
+         *        aujourd’hui il est 15h ==> annulation impossible
+         *
+         * */
+        if (LocalDateTime.now().isAfter(rendezVous.getDateHeureDebut().minusHours(24))) {
+            throw new BusinessException("Annulation impossible moins de 24h avant le rendez-vous");
+        }
+
+        // Vérification que le RDV n'est pas déjà annulé ou terminé
+        if (rendezVous.getStatut() != StatutRendezVous.PLANIFIER) {
+            throw new BusinessException("Seuls les rendez-vous planifiés peuvent être annulés");
+        }
+
+
+        rendezVous.setStatut(StatutRendezVous.ANNULER);
+        rendezVous.setDateAnnulation(LocalDateTime.now());
+        rendezvousRepository.save(rendezVous);
+
+         /*
+            Notification
+         */
+        // todo ..................
+
+        return null ;
+    }
+
+    @Override
+    public RendezvousDto getRendezVousById(Integer id) {
+
+        return rendezvousRepository.findById(id)
+                                    .map(RendezvousDto::fromEntity)
+                                    .orElseThrow(
+                                            ()-> new NotFoundException("Aucun Rendez-vous avec l'ID : "+id)
+                                    );
+    }
+
+    @Override
+    public List<RendezvousDto> getAllRendezVous() {
+
+        List<Rendezvous>  rendezvousList = rendezvousRepository.findAll();
+
+        return
+                Optional.of(rendezvousList)
+                        .filter(elt-> !elt.isEmpty())
+                        .orElseThrow(
+                                ()-> new NotFoundException("EMPTY LIST")
+                        ).stream()
+                        .map(RendezvousDto::fromEntity)
+                        .toList();
+    }
+
+    @Override
+    public List<RendezvousDto> searchRendezVous(RendezvousSearchDto searchDTO) {
+
+        /*
+        * permet de chercher des rendez-vous dynamiquement, selon plusieurs critères optionnels :
+        *           un medecin,une date,un statut,une salle
+        *
+        * */
+
+        //Specifivation<T> sert à construire des requêtes dynamiques sans écrire du SQL en dur
+        // (pratique pour des requêtes multi-critères où tous les critères sont optionnels)
+        Specification<Rendezvous> spec = (root, query, cb) -> cb.conjunction();
+
+        if (searchDTO.getMedecinId() != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("medecin").get("id"), searchDTO.getMedecinId()));
+        }
+
+        if (searchDTO.getDate() != null) {
+            LocalDateTime startOfDay = searchDTO.getDate().atStartOfDay();
+            LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+            spec = spec.and((root, query, cb) ->
+                    cb.between(root.get("dateHeureDebut"), startOfDay, endOfDay));
+        }
+
+        if (searchDTO.getSalle() != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("salle"), searchDTO.getSalle()));
+        }
+
+        if (searchDTO.getStatut() != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("statut"), StatutRendezVous.valueOf(searchDTO.getStatut())));
+        }
+
+        return rendezvousRepository.findAll(spec)
+                                    .stream()
+                                    .map(RendezvousDto::fromEntity)
+                                    .toList();
+    }
+
+    @Override
+    public List<RendezvousDto> getUpcomingRendezVousForMedecin(Integer medecinId) {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime inOneMonth = now.plusMonths(1);
+
+        return rendezvousRepository.findAllByMedecinAndPeriod(medecinId,now,inOneMonth)
+                                    .stream()
+                                    .map(RendezvousDto::fromEntity)
+                                    .toList();
+    }
+
+    @Override
+    public List<RendezvousDto> getRendezVousBetweenDates(LocalDateTime start, LocalDateTime end, Integer medecinId) {
+        return rendezvousRepository.findAllByMedecinAndPeriod(medecinId,start,end).stream().map((RendezvousDto::fromEntity)).toList();
+    }
+
+    @Override
+    public void checkRendezVousConflict(Integer medecinId, LocalDateTime start, LocalDateTime end) {
+
+        if (rendezvousRepository.existsConflictingMedecinRendezVous(medecinId, start, end)) {
+            throw new ConflictException("Le médecin a déjà un rendez-vous pendant cette plage horaire");
+        }
+
+    }
+
+    @Override
+    public void deleteRendezVous(Integer id) {
+        /*
+        *
+        * si la date de debut du rendezvous est superieur a celle d'aujourd'hui il y'a i an
+        * alors cela fait moins d'un ans que le Rendezvous a ete creer,sinon cela fait au moins 1 an que le Rendezvous a ete creer
+        * NB : On ne peut supprimer que les RDV anciens (par exemple > 1 an)
+        * */
+
+        Rendezvous rendezVous = rendezvousRepository.findById(id)
+                                                    .orElseThrow(
+                                                            () -> new NotFoundException("Rendez-vous non trouvé")
+                                                    );
+
+
+        if (rendezVous.getDateHeureDebut().isAfter(LocalDateTime.now().minusYears(1))) {
+            throw new BusinessException("Seuls les rendez-vous de plus d'un an peuvent être supprimés");
+        }
+
+        rendezvousRepository.delete(rendezVous);
+        /*
+            Notification
+         */
+        // todo ..................
+    }
+
+    private void checkPatientAvailability(Integer patientId, LocalDate date)  {
+        /*
+        * [00:00:00,23:59:59]
+        * */
+
+        //transformer une date (sans heure) en un datetime fixé à 00:00:00)
+        LocalDateTime startOfDay = date.atStartOfDay();
+        //ajoute 1 jour,enlève 1 nanoseconde
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+
+        if (rendezvousRepository.existsByPatientAndDate(patientId, startOfDay, endOfDay)) {
+            throw new ConflictException("Le patient a déjà un rendez-vous ce jour-là");
+        }
+    }
 }

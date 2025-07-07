@@ -4,6 +4,7 @@ import com.groupe.gestion_clinic.dto.RendezvousDto;
 import com.groupe.gestion_clinic.dto.RendezvousSearchDto;
 import com.groupe.gestion_clinic.dto.requestDto.RendezvousRequestDto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,17 +13,21 @@ public interface RendezvousService {
 
     RendezvousDto updateRendezVous(Integer id, RendezvousRequestDto requestDTO);
 
-    void cancelRendezVous(Integer id) ;
+    Void cancelRendezVous(Integer id) ;
 
-    RendezvousDto getRendezVousById(Long id) ;
+    RendezvousDto getRendezVousById(Integer id) ;
 
     List<RendezvousDto> getAllRendezVous();
 
     List<RendezvousDto> searchRendezVous(RendezvousSearchDto searchDTO);
 
-    List<RendezvousDto> getUpcomingRendezVousForMedecin(Long medecinId);
+    List<RendezvousDto> getUpcomingRendezVousForMedecin(Integer medecinId);
 
-    List<RendezvousDto> getRendezVousBetweenDates(LocalDateTime start, LocalDateTime end, Long medecinId);
+    List<RendezvousDto> getRendezVousBetweenDates(LocalDateTime start, LocalDateTime end, Integer medecinId);
 
-    void checkRendezVousConflict(Long medecinId, LocalDateTime start, LocalDateTime end) ;
+    void checkRendezVousConflict(Integer medecinId, LocalDateTime start, LocalDateTime end) ;
+
+    void deleteRendezVous(Integer id);
+
+
 }

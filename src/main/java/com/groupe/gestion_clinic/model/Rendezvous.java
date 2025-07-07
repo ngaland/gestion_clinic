@@ -24,6 +24,8 @@ public class Rendezvous extends AbstractEntity {
 
     private LocalDateTime dateHeureFin;
 
+    private LocalDateTime dateAnnulation;
+
     private String motif;
 
     private String salle;
@@ -31,11 +33,12 @@ public class Rendezvous extends AbstractEntity {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
+    private StatutRendezVous statut;
+
+
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;
-
-    private StatutRendezVous statut;
 
     @OneToMany(mappedBy = "rendezvous")
     private List<Prescription> prescription;
