@@ -1,5 +1,6 @@
 package com.groupe.gestion_clinic.dto;
 
+import com.groupe.gestion_clinic.dto.requestDto.RendezvousRequestDto;
 import com.groupe.gestion_clinic.model.Rendezvous;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
@@ -31,12 +32,24 @@ public class RendezvousDto {
 
     public static RendezvousDto fromEntity(Rendezvous rendezvous) {
         return
-                RendezvousDto.builder().build();
+                RendezvousDto.builder()
+                        .motif(rendezvous.getMotif())
+                        .salle(rendezvous.getSalle())
+                        .medecinDTO(MedecinDto.fromEntity(rendezvous.getMedecin()))
+                        .patientDTO(PatientDto.fromEntity(rendezvous.getPatient()))
+                        .dateHeureDebut(rendezvous.getDateHeureDebut())
+                        .dateHeureFin(rendezvous.getDateHeureFin())
+                        .build();
     }
     public static Rendezvous toDto(RendezvousDto rendezvousDto) {
         return
                 Rendezvous
                         .builder()
+                        .medecin(MedecinDto.toDto(rendezvousDto.getMedecinDTO()))
+                        .patient(PatientDto.toDto(rendezvousDto.getPatientDTO()))
+                        .dateHeureDebut(rendezvousDto.getDateHeureDebut())
+                        .dateHeureFin(rendezvousDto.getDateHeureFin())
+                        .salle(rendezvousDto.getSalle())
                         .build();
     }
 
