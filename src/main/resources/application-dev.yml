@@ -8,3 +8,10 @@ POSTGRES_SQL_PASSWORD: hels
 #SERVER
 ACTIVE_PROFILE: dev
 SERVER_PORT: 8080
+
+
+SMTP_HOST: smtp.gmail.com
+SMTP_PORT: 587
+SMTP_USER: votre-email@gmail.com
+SMTP_PASSWORD: rssn mtuw blbk qara
+SMTP_SSL_TRUST: smtp.gmail.com

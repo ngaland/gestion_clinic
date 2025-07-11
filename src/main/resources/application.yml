@@ -28,6 +28,26 @@ spring:
       hibernate:
         format_sql: true
 
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: ${SMTP_SSL_TRUST}
 
+# WebSocket Configuration
+#spring.websocket.allowed-origins=*
 server:
   port: ${SERVER_PORT}
+
+# Planification des rappels
+app:
+  notification:
+    reminder-time: "09:00"
