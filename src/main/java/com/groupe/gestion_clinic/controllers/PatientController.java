@@ -19,7 +19,7 @@ public class PatientController {
         return ResponseEntity.ok(patientService.createPatient(patientDto));
     }
 
-    @GetMapping("/{patientId}")
+    @PutMapping("/update/{patientId}")
     public ResponseEntity<?> updatePatient( @PathVariable Integer patientId, @RequestBody PatientDto patientDto) {
         return ResponseEntity.ok(patientService.updatePatient(patientId, patientDto));
     }
@@ -31,7 +31,8 @@ public class PatientController {
 
     @DeleteMapping("/{patientId}")
     public ResponseEntity<?> deletePatient(@PathVariable Integer patientId) {
-        return ResponseEntity.ok(patientService.deletePatient(patientId));
+        patientService.deletePatient(patientId);
+        return ResponseEntity.noContent().build();
     }
 
 

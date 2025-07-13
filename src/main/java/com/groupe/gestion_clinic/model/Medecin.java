@@ -25,8 +25,6 @@ public class Medecin extends Utilisateur{
     @Embedded
     private Adresse adresse;
 
-    @OneToMany(mappedBy = "medecin")
-    private List<Disponibilites> disponibles;
 
     @OneToMany(mappedBy = "medecin")
     private List<Rendezvous> rendezvous;

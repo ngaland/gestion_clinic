@@ -6,10 +6,12 @@ import com.groupe.gestion_clinic.exceptions.NotFoundException;
 import com.groupe.gestion_clinic.model.Medecin;
 import com.groupe.gestion_clinic.repositories.MedecinRepository;
 import com.groupe.gestion_clinic.services.MedecinService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +58,15 @@ public class MedecinServiceImpl implements MedecinService {
 
     @Override
     public List<MedecinDto> findAll() {
-        return List.of();
+
+        List<Medecin>  medecins = medecinRepository.findAll();
+        return Optional.of(medecins)
+                .filter(elt-> !elt.isEmpty())
+                .orElseThrow(
+                        ()-> new EntityNotFoundException("EMPTY LIST")
+                ).stream()
+                .map(MedecinDto::fromEntity)
+                .toList();
     }
 
     @Override

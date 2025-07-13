@@ -17,7 +17,7 @@ public class MedecinController {
         return ResponseEntity.ok(medecinService.createMedecin(medecinDto));
     }
 
-    @GetMapping("/{medecinId}")
+    @PutMapping("/{medecinId}")
     public ResponseEntity<?> updateMedecin( @PathVariable Integer medecinId, @RequestBody MedecinDto medecinDto) {
         return ResponseEntity.ok(medecinService.updateMedecin(medecinId, medecinDto));
     }
@@ -29,6 +29,7 @@ public class MedecinController {
 
     @DeleteMapping("/{medecinId}")
     public ResponseEntity<?> deleteMedecin(@PathVariable Integer medecinId) {
-        return ResponseEntity.ok(medecinService.deleteMedecin(medecinId));
+        medecinService.deleteMedecin(medecinId);
+        return ResponseEntity.noContent().build();
     }
 }

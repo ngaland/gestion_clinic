@@ -20,11 +20,12 @@ import java.util.List;
 public class Facture extends AbstractEntity{
 
 
-    @Column(nullable = false)
-    private Double montant;
+    private String numeroFacture;
 
     @Column(nullable = false)
-    private LocalDate dateEmission;
+    private Double montantTotal;
+
+    private LocalDate dateEcheance;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

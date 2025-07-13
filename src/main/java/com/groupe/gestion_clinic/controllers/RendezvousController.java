@@ -32,6 +32,11 @@ public class RendezvousController {
     public ResponseEntity<?> cancelRendezVous(@PathVariable Integer id) {
         return ResponseEntity.ok(rendezvousService.cancelRendezVous(id));
     }
+    @DeleteMapping("/delete/{rendezvousId}")
+    public ResponseEntity<?> deleteRendezVous(@PathVariable Integer rendezvousId) {
+        rendezvousService.deleteRendezVous(rendezvousId);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getRendezVousById(@PathVariable Integer id) {
@@ -58,7 +63,7 @@ public class RendezvousController {
     }
 
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<?> searchRendezVous(@RequestBody RendezvousSearchDto searchDTO) {
         return ResponseEntity.ok(rendezvousService.searchRendezVous(searchDTO));
     }

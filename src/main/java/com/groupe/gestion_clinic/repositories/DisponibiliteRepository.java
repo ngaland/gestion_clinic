@@ -1,6 +1,5 @@
 package com.groupe.gestion_clinic.repositories;
 
-import com.groupe.gestion_clinic.model.Disponibilites;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DisponibiliteRepository extends JpaRepository<Disponibilites, Integer> {
