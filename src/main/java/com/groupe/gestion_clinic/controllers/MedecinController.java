@@ -22,6 +22,12 @@ public class MedecinController {
         return ResponseEntity.ok(medecinService.updateMedecin(medecinId, medecinDto));
     }
 
+    @GetMapping("/{medecinId}")
+    public ResponseEntity<?> findMedecinById( @PathVariable Integer medecinId) {
+        return ResponseEntity.ok(medecinService.findById(medecinId));
+    }
+
+
     @GetMapping("/all")
     public ResponseEntity<?> findAllMedecin(){
         return ResponseEntity.ok(medecinService.findAll());
