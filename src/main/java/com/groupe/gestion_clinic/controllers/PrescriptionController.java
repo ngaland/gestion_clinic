@@ -2,7 +2,6 @@ package com.groupe.gestion_clinic.controllers;
 
 import com.groupe.gestion_clinic.dto.PrescriptionDto;
 import com.groupe.gestion_clinic.dto.requestDto.PrescriptionRequestDto;
-import com.groupe.gestion_clinic.repositories.PrescriptionRepository;
 import com.groupe.gestion_clinic.services.PrescriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,7 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPrescription(@RequestBody PrescriptionRequestDto requestDto) {
+    public ResponseEntity<PrescriptionDto> createPrescription(@RequestBody PrescriptionRequestDto requestDto) {
         PrescriptionDto createdPrescription = prescriptionService.createPrescription(requestDto);
         return new ResponseEntity<>(createdPrescription, HttpStatus.CREATED);
     }

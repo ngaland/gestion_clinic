@@ -1,20 +1,22 @@
 package com.groupe.gestion_clinic.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utilisateur  extends AbstractEntity{
+public abstract class  Utilisateur  extends AbstractEntity{
 
     private String nom;
 
@@ -25,5 +27,9 @@ public class Utilisateur  extends AbstractEntity{
 
     @Column(nullable = false)
     private String motDePasse;
+
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

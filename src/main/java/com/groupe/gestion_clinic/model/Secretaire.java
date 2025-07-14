@@ -1,6 +1,7 @@
 package com.groupe.gestion_clinic.model;
 
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@DiscriminatorValue("SECRETAIRE")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Secretaire extends Utilisateur {
