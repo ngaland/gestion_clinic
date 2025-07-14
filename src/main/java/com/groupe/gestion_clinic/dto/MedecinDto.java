@@ -1,9 +1,7 @@
 package com.groupe.gestion_clinic.dto;
 
-import com.groupe.gestion_clinic.model.Adresse;
 import com.groupe.gestion_clinic.model.Medecin;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
+import com.groupe.gestion_clinic.model.Role;
 import lombok.*;
 
 
@@ -14,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class MedecinDto {
 
+    private Integer id;
 
     private String nom;
 
@@ -25,12 +24,35 @@ public class MedecinDto {
 
     private AdressDto adressDto;
 
+    private Role role;
+
     public static MedecinDto fromEntity(Medecin medecin) {
-        return MedecinDto.builder().build();
+
+        if (medecin == null) return null;
+        return
+                MedecinDto.builder()
+                        .nom(medecin.getNom())
+                        .id(medecin.getId())
+                        .role(medecin.getRole())
+                        .specialite(medecin.getSpecialite())
+                        .email(medecin.getEmail())
+                        .prenom(medecin.getPrenom())
+                        .adressDto(AdressDto.fromEntity(medecin.getAdresse()))
+                        .build();
     }
 
 
     public static Medecin toDto(MedecinDto medecinDto) {
-        return Medecin.builder().build();
+
+        if (medecinDto == null) return null;
+        return
+                Medecin.builder()
+                        .nom(medecinDto.getNom())
+                        .prenom(medecinDto.getPrenom())
+                        .role(medecinDto.getRole())
+                        .email(medecinDto.getEmail())
+                        .adresse(AdressDto.toDto(medecinDto.getAdressDto()))
+                        .specialite(medecinDto.getSpecialite())
+                        .build();
     }
 }
