@@ -24,6 +24,11 @@ public class PatientController {
         return ResponseEntity.ok(patientService.updatePatient(patientId, patientDto));
     }
 
+    @GetMapping("/{patientId}")
+    public ResponseEntity<?> updatePatient( @PathVariable Integer patientId) {
+        return ResponseEntity.ok(patientService.findById(patientId));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> findAllPatient(){
         return ResponseEntity.ok(patientService.findAll());

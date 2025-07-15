@@ -50,7 +50,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto findById(Integer id) {
-        return patientRepository.findById(id).map(PatientDto::fromEntity).orElseThrow(()->new EntityNotFoundException("Patient with id " + id + " not found"));
+        return
+                patientRepository
+                        .findById(id)
+                        .map(PatientDto::fromEntity)
+                        .orElseThrow(()->new EntityNotFoundException("Patient with id " + id + " not found"));
     }
 
     @Override
