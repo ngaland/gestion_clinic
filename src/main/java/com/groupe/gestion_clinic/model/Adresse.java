@@ -16,7 +16,7 @@ public class Adresse {
 
     private String street ;
 
-    private Integer houseNumber ;
+    private String houseNumber ;
 
     private Integer postalCode ;
 

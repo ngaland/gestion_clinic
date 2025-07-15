@@ -20,7 +20,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
@@ -51,3 +51,17 @@ server:
 app:
   notification:
     reminder-time: "09:00"
+
+# logging sql
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+
+
+
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace

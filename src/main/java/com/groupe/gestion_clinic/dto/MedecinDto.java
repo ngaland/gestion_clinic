@@ -22,6 +22,8 @@ public class MedecinDto {
 
     private String specialite;
 
+    private String motDePasse;
+
     private AdressDto adressDto;
 
     private Role role;
@@ -51,6 +53,7 @@ public class MedecinDto {
                         .prenom(medecinDto.getPrenom())
                         .role(medecinDto.getRole())
                         .email(medecinDto.getEmail())
+                        .motDePasse(medecinDto.getMotDePasse())
                         .adresse(AdressDto.toDto(medecinDto.getAdressDto()))
                         .specialite(medecinDto.getSpecialite())
                         .build();

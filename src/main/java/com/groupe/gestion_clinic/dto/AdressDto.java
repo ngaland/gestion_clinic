@@ -12,7 +12,7 @@ public class AdressDto {
 
     private String street ;
 
-    private Integer houseNumber ;
+    private String houseNumber ;
 
     private Integer postalCode ;
 

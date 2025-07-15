@@ -7,6 +7,7 @@ import com.groupe.gestion_clinic.model.Medecin;
 import com.groupe.gestion_clinic.repositories.MedecinRepository;
 import com.groupe.gestion_clinic.services.MedecinService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MedecinServiceImpl implements MedecinService {
 

@@ -48,12 +48,17 @@ public class PatientDto {
         return
                 PatientDto
                         .builder()
+                        .nom(patient.getNom())
+                        .prenom(patient.getPrenom())
+                        .email(patient.getEmail())
                         .telephone(patient.getTelephone())
                         .allergies(patient.getAllergies())
                         .antecedents(patient.getAntecedents())
                         .dateNaissance(patient.getDateNaissance())
                         .adressDto(AdressDto.fromEntity(patient.getAdresse()))
-                        .rendezvousesDto(patient.getRendezvouses().stream().map(RendezvousDto::fromEntity).toList())
+                        .rendezvousesDto(patient.getRendezvouses() != null
+                                ? patient.getRendezvouses().stream().map(RendezvousDto::fromEntity).toList()
+                                : List.of())
                         .build();
 
     }
@@ -62,12 +67,17 @@ public class PatientDto {
         return
                 Patient
                         .builder()
+                        .nom(patientDto.getNom())
+                        .prenom(patientDto.getPrenom())
+                        .email(patientDto.getEmail())
                         .telephone(patientDto.getTelephone())
                         .allergies(patientDto.getAllergies())
                         .antecedents(patientDto.getAntecedents())
                         .dateNaissance(patientDto.getDateNaissance())
                         .adresse(AdressDto.toDto(patientDto.getAdressDto()))
-                        .rendezvouses(patientDto.getRendezvousesDto().stream().map(RendezvousDto::toDto).toList())
+                        .rendezvouses(patientDto.getRendezvousesDto() != null
+                                ? patientDto.getRendezvousesDto().stream().map(RendezvousDto::toDto).toList()
+                                : List.of())
                         .build();
 
     }
