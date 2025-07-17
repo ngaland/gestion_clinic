@@ -38,4 +38,12 @@ public class EmailService {
                 "<p>" + content + "</p>" +
                 "</body></html>";
     }
+
+    public void sendCancellationEmail(String email, String subject, String content) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject(subject);
+        message.setText(content);
+        mailSender.send(message);
+    }
 }

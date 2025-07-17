@@ -41,7 +41,7 @@ public class PatientDto {
 
     private AdressDto adressDto;
 
-    private List<RendezvousDto> rendezvousesDto;
+    //private List<RendezvousDto> rendezvousesDto;
 
 
     public static PatientDto fromEntity(Patient patient) {
@@ -56,9 +56,6 @@ public class PatientDto {
                         .antecedents(patient.getAntecedents())
                         .dateNaissance(patient.getDateNaissance())
                         .adressDto(AdressDto.fromEntity(patient.getAdresse()))
-                        .rendezvousesDto(patient.getRendezvouses() != null
-                                ? patient.getRendezvouses().stream().map(RendezvousDto::fromEntity).toList()
-                                : List.of())
                         .build();
 
     }
@@ -75,9 +72,6 @@ public class PatientDto {
                         .antecedents(patientDto.getAntecedents())
                         .dateNaissance(patientDto.getDateNaissance())
                         .adresse(AdressDto.toDto(patientDto.getAdressDto()))
-                        .rendezvouses(patientDto.getRendezvousesDto() != null
-                                ? patientDto.getRendezvousesDto().stream().map(RendezvousDto::toDto).toList()
-                                : List.of())
                         .build();
 
     }

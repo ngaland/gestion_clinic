@@ -2,6 +2,7 @@ package com.groupe.gestion_clinic.dto;
 
 import com.groupe.gestion_clinic.dto.requestDto.RendezvousRequestDto;
 import com.groupe.gestion_clinic.model.Rendezvous;
+import com.groupe.gestion_clinic.model.StatutRendezVous;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,7 +17,9 @@ public class RendezvousDto {
 
     private Integer id;
 
-    private PatientDto patientDTO;
+    private Integer patientId;
+
+    private String patientNom;
 
     private MedecinDto medecinDTO;
 
@@ -28,7 +31,7 @@ public class RendezvousDto {
 
     private String salle;
 
-    private String statut;
+    private StatutRendezVous statut;
 
     public static RendezvousDto fromEntity(Rendezvous rendezvous) {
         return
@@ -36,17 +39,19 @@ public class RendezvousDto {
                         .motif(rendezvous.getMotif())
                         .salle(rendezvous.getSalle())
                         .medecinDTO(MedecinDto.fromEntity(rendezvous.getMedecin()))
-                        .patientDTO(PatientDto.fromEntity(rendezvous.getPatient()))
                         .dateHeureDebut(rendezvous.getDateHeureDebut())
+                        .statut(rendezvous.getStatut())
                         .dateHeureFin(rendezvous.getDateHeureFin())
+                        .patientId(rendezvous.getPatient().getId()!=null ? rendezvous.getPatient().getId() : null)
+                        .patientNom(rendezvous.getPatient().getNom()!=null ? rendezvous.getPatient().getNom() : null)
                         .build();
     }
+
     public static Rendezvous toDto(RendezvousDto rendezvousDto) {
         return
                 Rendezvous
                         .builder()
                         .medecin(MedecinDto.toDto(rendezvousDto.getMedecinDTO()))
-                        .patient(PatientDto.toDto(rendezvousDto.getPatientDTO()))
                         .dateHeureDebut(rendezvousDto.getDateHeureDebut())
                         .dateHeureFin(rendezvousDto.getDateHeureFin())
                         .salle(rendezvousDto.getSalle())

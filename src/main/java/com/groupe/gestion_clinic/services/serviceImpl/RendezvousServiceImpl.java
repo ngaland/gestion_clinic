@@ -44,7 +44,7 @@ public class RendezvousServiceImpl implements RendezvousService {
     public RendezvousDto createRendezVous(RendezvousRequestDto requestDto) {
 
         // recuperer patient et medecin s'ils existent
-        Patient patient = patientRepository.findById(requestDto.getMedecinId())
+        Patient patient = patientRepository.findById(requestDto.getPatientId())
                 .orElseThrow(() -> new NotFoundException("Patient non trouvé"));
 
         Medecin medecin = medecinRepository.findById(requestDto.getMedecinId())
@@ -168,7 +168,7 @@ public class RendezvousServiceImpl implements RendezvousService {
                 )
         );
 
-/*        // Pour le patient
+        // Pour le patient
         notificationService.sendPrivateNotification(
                 patient.getId().longValue(),
                 new NotificationDto(
@@ -181,6 +181,7 @@ public class RendezvousServiceImpl implements RendezvousService {
                 )
         );
 
+/*
         // Pour les secrétaires
         notificationService.sendPublicNotification(
                 new NotificationDto(
@@ -270,12 +271,12 @@ public class RendezvousServiceImpl implements RendezvousService {
                 )
         );
 
-/*        // Email d'annulation
+        // Email d'annulation
         emailService.sendCancellationEmail(
                 cancelledRdv.getPatient().getEmail(),
                 "Annulation de RDV",
                 cancelMessage
-        );*/
+        );
 
 
         return null ;

@@ -1,5 +1,6 @@
 package com.groupe.gestion_clinic.handler;
 
+import com.groupe.gestion_clinic.exceptions.BusinessException;
 import com.groupe.gestion_clinic.exceptions.ObjectValidationException;
 import com.groupe.gestion_clinic.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,20 @@ public class GlobalHandlerException {
                                                 .msgViolations(exception.getViolations())
                                                 .status(status.value())
                                                 .build();
+        return ResponseEntity.ok(errorResponse);
+
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<?> handlerException(BusinessException exception) {
+
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =
+                ErrorResponse
+                        .builder()
+                        .message(exception.getMessage())
+                        .status(status.value())
+                        .build();
         return ResponseEntity.ok(errorResponse);
 
     }
