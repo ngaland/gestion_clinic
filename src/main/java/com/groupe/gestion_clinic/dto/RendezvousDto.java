@@ -36,6 +36,7 @@ public class RendezvousDto {
     public static RendezvousDto fromEntity(Rendezvous rendezvous) {
         return
                 RendezvousDto.builder()
+                        .id(rendezvous.getId())
                         .motif(rendezvous.getMotif())
                         .salle(rendezvous.getSalle())
                         .medecinDTO(MedecinDto.fromEntity(rendezvous.getMedecin()))

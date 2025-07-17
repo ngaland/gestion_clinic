@@ -1,8 +1,6 @@
 package com.groupe.gestion_clinic.handler;
 
-import com.groupe.gestion_clinic.exceptions.BusinessException;
-import com.groupe.gestion_clinic.exceptions.ObjectValidationException;
-import com.groupe.gestion_clinic.exceptions.UserNotFoundException;
+import com.groupe.gestion_clinic.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +40,34 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handlerException(BusinessException exception) {
+
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =
+                ErrorResponse
+                        .builder()
+                        .message(exception.getMessage())
+                        .status(status.value())
+                        .build();
+        return ResponseEntity.ok(errorResponse);
+
+    }
+
+    @ExceptionHandler(PastAppointmentException.class)
+    public ResponseEntity<?> handlerException(PastAppointmentException exception) {
+
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =
+                ErrorResponse
+                        .builder()
+                        .message(exception.getMessage())
+                        .status(status.value())
+                        .build();
+        return ResponseEntity.ok(errorResponse);
+
+    }
+
+    @ExceptionHandler(TooLateToCancelException.class)
+    public ResponseEntity<?> handlerException(TooLateToCancelException exception) {
 
         final HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorResponse errorResponse =

@@ -4,9 +4,7 @@ import com.groupe.gestion_clinic.dto.NotificationDto;
 import com.groupe.gestion_clinic.dto.RendezvousDto;
 import com.groupe.gestion_clinic.dto.RendezvousSearchDto;
 import com.groupe.gestion_clinic.dto.requestDto.RendezvousRequestDto;
-import com.groupe.gestion_clinic.exceptions.BusinessException;
-import com.groupe.gestion_clinic.exceptions.ConflictException;
-import com.groupe.gestion_clinic.exceptions.NotFoundException;
+import com.groupe.gestion_clinic.exceptions.*;
 import com.groupe.gestion_clinic.model.Medecin;
 import com.groupe.gestion_clinic.model.Patient;
 import com.groupe.gestion_clinic.model.Rendezvous;
@@ -204,6 +202,7 @@ public class RendezvousServiceImpl implements RendezvousService {
         Rendezvous rendezVous = rendezvousRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Rendez-vous non trouvé"));
 
+        LocalDateTime now = LocalDateTime.now();
         /*
          * Annulation impossible moins de 24h avant le rendez-vous”
          * "le rendez-vous est demain à 14h
@@ -213,8 +212,19 @@ public class RendezvousServiceImpl implements RendezvousService {
          *        aujourd’hui il est 15h ==> annulation impossible
          *
          * */
-        if (LocalDateTime.now().isAfter(rendezVous.getDateHeureDebut().minusHours(24))) {
-            throw new BusinessException("Annulation impossible moins de 24h avant le rendez-vous");
+        // Rendez-vous Moins de 24h avant le début
+        if (now.isAfter(rendezVous.getDateHeureDebut().minusHours(24))) {
+            throw new TooLateToCancelException("Annulation impossible moins de 24h avant le rendez-vous") ;
+        }
+
+        // Rendez-vous déjà passé
+        if (now.isAfter(rendezVous.getDateHeureFin())) {
+            throw new PastAppointmentException("Impossible d'annuler un rendez-vous déjà passé");
+        }
+
+        // 2. Rendez-vous En cours ?
+        if (now.isAfter(rendezVous.getDateHeureDebut()) && now.isBefore(rendezVous.getDateHeureFin())) {
+            throw new BusinessException("Impossible d'annuler un rendez-vous en cours ....");
         }
 
         // Vérification que le RDV n'est pas déjà annulé ou terminé
