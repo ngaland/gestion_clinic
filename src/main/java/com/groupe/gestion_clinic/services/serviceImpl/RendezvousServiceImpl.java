@@ -399,12 +399,12 @@ public class RendezvousServiceImpl implements RendezvousService {
     }
 
     @Override
-    public List<RendezvousDto> getUpcomingRendezVousForMedecin(Integer medecinId) {
+    public List<RendezvousDto> getUpcomingRendezVousForMedecin() {
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime inOneMonth = now.plusMonths(1);
 
-        return rendezvousRepository.findAllByMedecinAndPeriod(medecinId,now,inOneMonth)
+        return rendezvousRepository.findUpcomingRendezVous(now,inOneMonth)
                                     .stream()
                                     .map(RendezvousDto::fromEntity)
                                     .toList();

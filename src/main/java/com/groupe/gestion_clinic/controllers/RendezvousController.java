@@ -48,9 +48,9 @@ public class RendezvousController {
         return ResponseEntity.ok(rendezvousService.getAllRendezVous());
     }
 
-    @GetMapping("/upcoming/{medecinId}")
-    public ResponseEntity<?> getUpcomingRendezVousForMedecin(@PathVariable Integer medecinId) {
-        return ResponseEntity.ok(rendezvousService.getUpcomingRendezVousForMedecin(medecinId));
+    @GetMapping("/all/upcoming")
+    public ResponseEntity<?> getUpcomingRendezVousForMedecin() {
+        return ResponseEntity.ok(rendezvousService.getUpcomingRendezVousForMedecin());
     }
 
 

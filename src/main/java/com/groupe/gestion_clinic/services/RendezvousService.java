@@ -21,7 +21,7 @@ public interface RendezvousService {
 
     List<RendezvousDto> searchRendezVous(RendezvousSearchDto searchDTO);
 
-    List<RendezvousDto> getUpcomingRendezVousForMedecin(Integer medecinId);
+    List<RendezvousDto> getUpcomingRendezVousForMedecin();
 
     List<RendezvousDto> getRendezVousBetweenDates(LocalDateTime start, LocalDateTime end, Integer medecinId);
 
