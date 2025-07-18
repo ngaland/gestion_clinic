@@ -63,7 +63,7 @@ public class RendezvousController {
     }
 
 
-    @PostMapping("/search")
+    @PostMapping("/all/search")
     public ResponseEntity<?> searchRendezVous(@RequestBody RendezvousSearchDto searchDTO) {
         return ResponseEntity.ok(rendezvousService.searchRendezVous(searchDTO));
     }
