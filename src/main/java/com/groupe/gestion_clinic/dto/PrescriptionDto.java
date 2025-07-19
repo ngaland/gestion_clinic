@@ -36,11 +36,13 @@ public class PrescriptionDto {
         return
                 PrescriptionDto
                         .builder()
+                        .id(prescription.getId())
                         .dosage(prescription.getDosage())
                         .posologie(prescription.getPosologie())
                         .medicament(prescription.getMedicament())
                         .rendezvousId(prescription.getRendezvous().getId())
-                        .factureId(prescription.getFacture().getId())
+                        .factureId(prescription.getFacture() != null ? prescription.getFacture().getId() : null)
+                        .effective(prescription.getEffective())
                         .build();
 
     }

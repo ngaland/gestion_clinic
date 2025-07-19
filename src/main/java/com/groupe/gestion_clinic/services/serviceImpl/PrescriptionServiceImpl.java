@@ -50,6 +50,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             throw new BusinessException("Le Rendezvous associé doit avoir un médecin et un patient.");
         }
 
+        if(prescriptionRepository.existsByRendezvousIdAndMedicamentAndDosageAndPosologie(
+                                                        requestDto.getRendezvousId(),
+                                                        requestDto.getMedicament(),
+                                                        requestDto.getDosage(),
+                                                        requestDto.getPosologie())
+        )
+        {
+            throw new BusinessException("Cette prescription existe déjà pour ce rendez-vous.");
+        }
+
         Prescription prescription = new Prescription();
         prescription.setPrescriptionDate(requestDto.getPrescriptionDate() != null ? requestDto.getPrescriptionDate() : LocalDate.now());
         prescription.setMedicament(requestDto.getMedicament()); // Nouveau champ
