@@ -83,11 +83,14 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -127,21 +130,21 @@
 		</dependency>
 
 
-		<!-- Pour l'envoi d'emails -->
+		<!-- dependence Pour l'envoi d'emails -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
 
-		<!-- Pour la planification -->
+		<!-- dependence Pour la planification -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-quartz</artifactId>
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Pour la programmation des tâches (rappels) -->
+		<!-- dependence Pour la programmation des tâches (rappels) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-integration</artifactId>
@@ -152,7 +155,7 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 
-		<!-- Apache PDFBox pour les pdf -->
+		<!-- dependence Apache PDFBox pour les pdf -->
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
@@ -161,6 +164,7 @@
 
 		<!-- ==============================web socket notification ============================-->
 
+		<!-- swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

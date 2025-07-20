@@ -52,15 +52,18 @@ spring:
     verify:
       host: ${VERIFY_EMAIL_HOSt}
 
+
 # WebSocket Configuration
 #spring.websocket.allowed-origins=*
 server:
   port: ${SERVER_PORT}
 
+
 # Planification des rappels
 app:
   notification:
     reminder-time: "09:00"
+
 
 # logging sql
 logging:
@@ -75,3 +78,10 @@ logging:
           descriptor:
             sql:
               BasicBinder: trace
+
+
+# Configuration JWT
+jwt:
+  secret:
+    key: VotreCléSecrèteJWTTrèsLongueEtComplexePourLaProduction
+  expiration: 3600000          # Durée de validité du token en millisecondes (ex: 1 heure)
