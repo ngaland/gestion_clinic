@@ -26,7 +26,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPrescriptionById(@PathVariable Integer id) {
+    public ResponseEntity<PrescriptionDto> getPrescriptionById(@PathVariable Integer id) {
         PrescriptionDto prescription = prescriptionService.getPrescriptionById(id);
         return ResponseEntity.ok(prescription);
     }

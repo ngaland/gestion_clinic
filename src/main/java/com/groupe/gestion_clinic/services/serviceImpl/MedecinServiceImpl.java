@@ -9,6 +9,7 @@ import com.groupe.gestion_clinic.services.MedecinService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,17 @@ import java.util.Optional;
 public class MedecinServiceImpl implements MedecinService {
 
     private final MedecinRepository medecinRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     public MedecinDto createMedecin(MedecinDto medecinDto) {
+        if(medecinDto == null) {
+            return null;
+        }
+        // encoder le mot de passe avant de l'enregistrer
+        if(medecinDto.getMotDePasse() != null) {
+            medecinDto.setMotDePasse(encoder.encode(medecinDto.getMotDePasse()));
+        }
         return MedecinDto.fromEntity(medecinRepository.save(MedecinDto.toDto(medecinDto)));
     }
 
