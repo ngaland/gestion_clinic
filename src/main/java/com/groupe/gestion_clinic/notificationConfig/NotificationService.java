@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 *
 * --------------- flux de fonctionement ------------------------
 * Le client (navigateur) établit une connexion WebSocket
-* Le client s'abonne à des canaux de notification (/topic/..., /user/queue/...)
-* Le serveur envoie des notifications via ces canaux lorsque des événements se produisen
+* Le client s'abonne à des canaux de notification (/topic/... , /user/queue/...)
+* Le serveur envoie des notifications via ces canaux lorsque des événements se produisent
 * Le client reçoit et affiche les notifications en temps réel
 *
 * */

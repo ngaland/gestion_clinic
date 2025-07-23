@@ -21,7 +21,7 @@ public class ChatMessageDto {
     private LocalDateTime timestamp;
     private Boolean isRead;
 
-    public static ChatMessageDto fromDto(ChatMessage chatMessage) {
+    public static ChatMessageDto fromEntity(ChatMessage chatMessage) {
         return ChatMessageDto.builder()
                 .id(chatMessage.getId())
                 .senderId(chatMessage.getSender() != null ? chatMessage.getSender().getId() : null)
