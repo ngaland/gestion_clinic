@@ -15,6 +15,7 @@ public class SecretaireDto {
     private String nom;
     private String prenom;
     private String email;
+    private String motDePasse;
     private Role role;
     private AdressDto adressDto;
 
@@ -30,7 +31,7 @@ public class SecretaireDto {
                 .prenom(secretaire.getPrenom())
                 .email(secretaire.getEmail())
                 .role(secretaire.getRole())
-                .adressDto(AdressDto.fromEntity(secretaire.getAdresse()))
+                .adressDto(AdressDto.fromEntity(secretaire.getAdresse() != null ? secretaire.getAdresse() : null))
                 .build();
     }
 
@@ -42,8 +43,9 @@ public class SecretaireDto {
                 .nom(dto.getNom())
                 .prenom(dto.getPrenom())
                 .email(dto.getEmail())
+                .motDePasse(dto.getMotDePasse() != null ? dto.getMotDePasse() : null)
                 .role(dto.getRole())
-                .adresse(AdressDto.toDto(dto.getAdressDto()))
+                .adresse(AdressDto.toDto(dto.getAdressDto() != null ? dto.getAdressDto() : null))
                 .build();
     }
 }

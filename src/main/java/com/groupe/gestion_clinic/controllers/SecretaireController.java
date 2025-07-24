@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/secretaire")
 @RequiredArgsConstructor
@@ -16,18 +18,18 @@ public class SecretaireController {
     private final SecretaireService secretaireService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveSecretaire(@RequestBody SecretaireDto dto) {
+    public ResponseEntity<SecretaireDto> saveSecretaire(@RequestBody SecretaireDto dto) {
         SecretaireDto secretaireDto = secretaireService.createSecretaire(dto);
         return new ResponseEntity<>(secretaireDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{secretaireId}")
-    public ResponseEntity<?> updateSecretaire(@PathVariable Integer secretaireId, @RequestBody SecretaireDto dto) {
+    public ResponseEntity<SecretaireDto> updateSecretaire(@PathVariable Integer secretaireId, @RequestBody SecretaireDto dto) {
         return ResponseEntity.ok(secretaireService.updateSecretaire(secretaireId, dto));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> findAllSecretaire() {
+    public ResponseEntity<List<SecretaireDto>> findAllSecretaire() {
         return ResponseEntity.ok(secretaireService.findAll());
     }
 

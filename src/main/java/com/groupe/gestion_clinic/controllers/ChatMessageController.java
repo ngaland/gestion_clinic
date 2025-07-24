@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 /*
-* Utilisez @Controller pour les contrôleurs STOMP
+* @Controller pour les contrôleurs STOMP
 * @RestController Nécessaire pour des endpoints REST
 * */
 @Controller

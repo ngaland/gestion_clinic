@@ -8,6 +8,7 @@ import com.groupe.gestion_clinic.repositories.SecretaireRepository;
 import com.groupe.gestion_clinic.services.SecretaireService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class SecretaireServiceImpl implements SecretaireService {
+
     private final SecretaireRepository secretaireRepository;
+    private final PasswordEncoder encoder;
 
 
     @Override
     public SecretaireDto createSecretaire(SecretaireDto secretaireDto) {
+        if(secretaireDto == null) {
+            return null;
+        }
+
+        // encoder le mot de passe avant de l'enregistrer
+        if(secretaireDto.getMotDePasse() != null) {
+            secretaireDto.setMotDePasse(encoder.encode(secretaireDto.getMotDePasse()));
+        }
+
         return SecretaireDto.fromEntity(secretaireRepository.save(SecretaireDto.toDto(secretaireDto)));
     }
 

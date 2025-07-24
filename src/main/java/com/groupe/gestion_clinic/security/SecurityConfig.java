@@ -59,11 +59,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Active CORS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Autorise l'authentification sans JWT
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/medecins/**").hasAnyRole("MEDECIN","ADMIN")
                         .requestMatchers("/api/secretaires/**").hasAnyRole("SECRETAIRE","MEDECIN","ADMIN")
                         //.requestMatchers("/api/administrateurs/**").hasRole("ADMIN") // Accès pour les admins
-                        //.requestMatchers("/api/patients/**").hasAnyRole("PATIENT", "MEDECIN", "SECRETAIRE", "ADMIN") // Exemple: patient peut accéder à ses propres données, médecins et secrétaires peuvent les gérer
-
+                        .requestMatchers("/api/patients/**").hasAnyRole( "MEDECIN", "SECRETAIRE", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de session HTTP

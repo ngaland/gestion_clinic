@@ -84,4 +84,4 @@ logging:
 jwt:
   secret:
     key: F06PBJ6GzaTRCyiAycvwVHn0Mkgi9ztGpl6DIkULwtDcJ2y17uDwYS0XdrNjIIfWKAvWPoyAwBLHvHKnDzzPmmXWEpaRbWVG8zGkIViUWumw64U6nGOE2d5a7Zb9sQaOrmYfxCHTbPinjbSOoMuSJhk793ewS3COygGtNoAKjGZgiwzlWpIgAYDxTDHzJAL6gp8YEuxmq5CpovVtTm6V4hvEf3kA7zBmjWctjTULcXlQ2VjfhH6WI48lJ5gqBZWl
-  expiration: 3600000          # Durée de validité du token en millisecondes (ex: 1 heure)
+  expiration: 86400000           # 3600000 : Durée de validité du token en millisecondes (ex: 1 heure)
