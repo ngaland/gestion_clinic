@@ -62,7 +62,6 @@ public class ChatMessageServiceImpl implements ChatMesssageService {
                 chatMessageDto
         );
 
-
         return chatMessageDto;
     }
 
