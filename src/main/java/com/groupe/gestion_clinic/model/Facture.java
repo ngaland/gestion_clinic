@@ -27,6 +27,9 @@ public class Facture extends AbstractEntity{
 
     private LocalDate dateEcheance;
 
+    @Column(name = "idEntreprise")
+    private Integer idEntreprise;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatutFacture statut;
