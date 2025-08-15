@@ -12,7 +12,7 @@ import java.util.List;
 
 @Tag(name = "Patient Management", description = "Operations related to Patient management")
 @RestController
-@RequestMapping("/api/patient")
+@RequestMapping("/api/patients")
 @RequiredArgsConstructor
 public class PatientController {
 

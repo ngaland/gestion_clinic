@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
-
 
 
 @Getter @Setter
@@ -60,7 +58,7 @@ public class PatientDto {
 
     }
 
-    public static Patient toDto(PatientDto patientDto) {
+    public static Patient toEntity(PatientDto patientDto) {
         return
                 Patient
                         .builder()

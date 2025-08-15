@@ -25,7 +25,7 @@ public class PatientServiceImpl implements PatientService {
         if(patientRepository.findByEmail(patientDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Patient with email already exists");
         }
-        return PatientDto.fromEntity(patientRepository.save(PatientDto.toDto(patientDto)));
+        return PatientDto.fromEntity(patientRepository.save(PatientDto.toEntity(patientDto)));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PatientServiceImpl implements PatientService {
         dto.setNom(patientDto.getNom());
         dto.setPrenom(patientDto.getPrenom());
 
-        return PatientDto.fromEntity(patientRepository.save(PatientDto.toDto(patientDto)));
+        return PatientDto.fromEntity(patientRepository.save(PatientDto.toEntity(patientDto)));
     }
 
     @Override
