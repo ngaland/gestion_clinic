@@ -59,6 +59,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Active CORS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Autorise l'authentification sans JWT
+                        .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**",
+                                        "/v3/api-docs.yaml").permitAll() // Autorise Swagger UI et OpenAPI
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/api/medecins/**").hasAnyRole("MEDECIN","ADMIN")
                         .requestMatchers("/api/secretaires/**").hasAnyRole("SECRETAIRE","MEDECIN","ADMIN")
