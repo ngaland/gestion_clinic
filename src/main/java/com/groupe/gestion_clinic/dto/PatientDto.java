@@ -47,6 +47,7 @@ public class PatientDto {
                 PatientDto
                         .builder()
                         .nom(patient.getNom())
+                        .id(patient.getId())
                         .prenom(patient.getPrenom())
                         .email(patient.getEmail())
                         .telephone(patient.getTelephone())
