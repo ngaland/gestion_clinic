@@ -85,6 +85,7 @@ public class PatientServiceImpl implements PatientService {
                                 .orElseThrow(
                                     ()->new EntityNotFoundException("Patient with id " + id + " not found")
                                 );
+        patientRepository.deleteById(id);
         return PatientDto.fromEntity(patient);
     }
 

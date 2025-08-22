@@ -45,7 +45,7 @@ public class PatientController {
 
     @Operation(summary = "Delete Patient by ID", description = "Deletes a Patient entity by its ID")
     @DeleteMapping("/{patientId}")
-    public ResponseEntity<?> deletePatient(@PathVariable Integer patientId) {
+    public ResponseEntity<PatientDto> deletePatient(@PathVariable Integer patientId) {
         patientService.deletePatient(patientId);
         return ResponseEntity.noContent().build();
     }
