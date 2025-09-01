@@ -33,7 +33,8 @@ public class SecretaireServiceImpl implements SecretaireService {
             secretaireDto.setMotDePasse(encoder.encode(secretaireDto.getMotDePasse()));
         }
 
-        return SecretaireDto.fromEntity(secretaireRepository.save(SecretaireDto.toDto(secretaireDto)));
+        Secretaire secretaire = SecretaireDto.toDto(secretaireDto);
+        return SecretaireDto.fromEntity(secretaireRepository.save(secretaire));
     }
 
     @Override
