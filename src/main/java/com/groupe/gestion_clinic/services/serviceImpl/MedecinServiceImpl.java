@@ -32,7 +32,8 @@ public class MedecinServiceImpl implements MedecinService {
         if(medecinDto.getMotDePasse() != null) {
             medecinDto.setMotDePasse(encoder.encode(medecinDto.getMotDePasse()));
         }
-        return MedecinDto.fromEntity(medecinRepository.save(MedecinDto.toDto(medecinDto)));
+        Medecin medecin = MedecinDto.toDto(medecinDto);
+        return MedecinDto.fromEntity(medecinRepository.save(medecin));
     }
 
     @Override
