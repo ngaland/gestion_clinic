@@ -18,6 +18,7 @@ public interface RendezvousService {
     RendezvousDto getRendezVousById(Integer id) ;
 
     List<RendezvousDto> getAllRendezVous();
+    List<RendezvousDto> getAllByMedecinAndPeriode(Integer patientId,LocalDateTime startDate, LocalDateTime endDate);
 
     List<RendezvousDto> searchRendezVous(RendezvousSearchDto searchDTO);
 

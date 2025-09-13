@@ -60,5 +60,25 @@ public interface RendezvousRepository extends JpaRepository<Rendezvous, Integer>
     List<Rendezvous> findUpcomingRendezVous(
                                             @Param("now") LocalDateTime now,
                                             @Param("futureDate") LocalDateTime futureDate);
+
+    // récupérer tous les rendez-vous d'un médecin spécifique par ordre chronologique
+    @Query("SELECT r FROM Rendezvous r " +
+            "WHERE r.medecin.id = :medecinId " +
+            "ORDER BY r.dateHeureDebut")
+    List<Rendezvous> findAllByMedecin(@Param("medecinId") Integer medecinId);
+
+    // récupérer tous les rendez-vous planifiés d'un médecin spécifique
+    @Query("SELECT r FROM Rendezvous r " +
+            "WHERE r.medecin.id = :medecinId " +
+            "AND r.statut = com.groupe.gestion_clinic.model.StatutRendezVous.PLANIFIER " +
+            "ORDER BY r.dateHeureDebut")
+    List<Rendezvous> findPlanifiedByMedecin(@Param("medecinId") Integer medecinId);
+
+    // récupérer tous les rendez-vous annulés d'un médecin spécifique
+    @Query("SELECT r FROM Rendezvous r " +
+            "WHERE r.medecin.id = :medecinId " +
+            "AND r.statut = com.groupe.gestion_clinic.model.StatutRendezVous.ANNULER " +
+            "ORDER BY r.dateHeureDebut")
+    List<Rendezvous> findCancelledByMedecin(@Param("medecinId") Integer medecinId);
     
 }

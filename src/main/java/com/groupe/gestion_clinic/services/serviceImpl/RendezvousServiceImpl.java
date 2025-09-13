@@ -317,6 +317,19 @@ public class RendezvousServiceImpl implements RendezvousService {
                         .toList();
     }
 
+    @Override
+    public List<RendezvousDto> getAllByMedecinAndPeriode(Integer patientId,LocalDateTime startDate, LocalDateTime endDate) {
+        List<Rendezvous>  rendezvousList = rendezvousRepository.findAllByMedecinAndPeriod(patientId,startDate,endDate);
+        return
+                Optional.of(rendezvousList)
+                    .filter(elt-> !elt.isEmpty())
+                    .orElseThrow(
+                            ()-> new NotFoundException("EMPTY LIST")
+                    ).stream()
+                    .map(RendezvousDto::fromEntity)
+                    .toList();
+    }
+
 
     @Override
     public void deleteRendezVous(Integer id) {
