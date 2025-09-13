@@ -46,11 +46,11 @@ public class RendezvousController {
         return ResponseEntity.ok(rendezvousService.getRendezVousById(id));
     }
 
-    @GetMapping("/allByMedecinAndPeriode/{patientId}")
-    public ResponseEntity<List<RendezvousDto>> getAllByMedecinAndPeriode(@PathVariable Integer patientId,
+    @GetMapping("/allByMedecinAndPeriode/{medecinId}")
+    public ResponseEntity<List<RendezvousDto>> getAllByMedecinAndPeriode(@PathVariable Integer medecinId,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return ResponseEntity.ok(rendezvousService.getAllByMedecinAndPeriode(patientId, startDate, endDate));
+        return ResponseEntity.ok(rendezvousService.getAllByMedecinAndPeriode(medecinId, startDate, endDate));
     }
 
     @GetMapping("/all")
@@ -78,5 +78,19 @@ public class RendezvousController {
         return ResponseEntity.ok(rendezvousService.searchRendezVous(searchDTO));
     }
 
+    @GetMapping("/medecin/{medecinId}/all")
+    public ResponseEntity<List<RendezvousDto>> getAllRendezVousByMedecin(@PathVariable Integer medecinId) {
+        return ResponseEntity.ok(rendezvousService.getAllRendezVousByMedecin(medecinId));
+    }
+
+    @GetMapping("/medecin/{medecinId}/planified")
+    public ResponseEntity<List<RendezvousDto>> getPlanifiedRendezVousByMedecin(@PathVariable Integer medecinId) {
+        return ResponseEntity.ok(rendezvousService.getPlanifiedRendezVousByMedecin(medecinId));
+    }
+
+    @GetMapping("/medecin/{medecinId}/cancelled")
+    public ResponseEntity<List<RendezvousDto>> getCancelledRendezVousByMedecin(@PathVariable Integer medecinId) {
+        return ResponseEntity.ok(rendezvousService.getCancelledRendezVousByMedecin(medecinId));
+    }
 
 }

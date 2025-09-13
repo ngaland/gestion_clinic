@@ -318,8 +318,8 @@ public class RendezvousServiceImpl implements RendezvousService {
     }
 
     @Override
-    public List<RendezvousDto> getAllByMedecinAndPeriode(Integer patientId,LocalDateTime startDate, LocalDateTime endDate) {
-        List<Rendezvous>  rendezvousList = rendezvousRepository.findAllByMedecinAndPeriod(patientId,startDate,endDate);
+    public List<RendezvousDto> getAllByMedecinAndPeriode(Integer medecinId,LocalDateTime startDate, LocalDateTime endDate) {
+        List<Rendezvous>  rendezvousList = rendezvousRepository.findAllByMedecinAndPeriod(medecinId,startDate,endDate);
         return
                 Optional.of(rendezvousList)
                     .filter(elt-> !elt.isEmpty())
@@ -438,6 +438,30 @@ public class RendezvousServiceImpl implements RendezvousService {
     }
 
 
+
+    @Override
+    public List<RendezvousDto> getAllRendezVousByMedecin(Integer medecinId) {
+        return rendezvousRepository.findAllByMedecin(medecinId)
+                .stream()
+                .map(RendezvousDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<RendezvousDto> getPlanifiedRendezVousByMedecin(Integer medecinId) {
+        return rendezvousRepository.findPlanifiedByMedecin(medecinId)
+                .stream()
+                .map(RendezvousDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<RendezvousDto> getCancelledRendezVousByMedecin(Integer medecinId) {
+        return rendezvousRepository.findCancelledByMedecin(medecinId)
+                .stream()
+                .map(RendezvousDto::fromEntity)
+                .toList();
+    }
 
     private void checkPatientAvailability(Integer patientId, LocalDate date)  {
         /*

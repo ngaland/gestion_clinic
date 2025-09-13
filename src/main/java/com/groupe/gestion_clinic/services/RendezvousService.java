@@ -18,7 +18,7 @@ public interface RendezvousService {
     RendezvousDto getRendezVousById(Integer id) ;
 
     List<RendezvousDto> getAllRendezVous();
-    List<RendezvousDto> getAllByMedecinAndPeriode(Integer patientId,LocalDateTime startDate, LocalDateTime endDate);
+    List<RendezvousDto> getAllByMedecinAndPeriode(Integer medecinId,LocalDateTime startDate, LocalDateTime endDate);
 
     List<RendezvousDto> searchRendezVous(RendezvousSearchDto searchDTO);
 
@@ -30,5 +30,10 @@ public interface RendezvousService {
 
     void deleteRendezVous(Integer id);
 
+    List<RendezvousDto> getAllRendezVousByMedecin(Integer medecinId);
+
+    List<RendezvousDto> getPlanifiedRendezVousByMedecin(Integer medecinId);
+
+    List<RendezvousDto> getCancelledRendezVousByMedecin(Integer medecinId);
 
 }
