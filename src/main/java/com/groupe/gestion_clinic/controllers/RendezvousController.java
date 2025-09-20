@@ -46,13 +46,6 @@ public class RendezvousController {
         return ResponseEntity.ok(rendezvousService.getRendezVousById(id));
     }
 
-    @GetMapping("/allByMedecinAndPeriode/{medecinId}")
-    public ResponseEntity<List<RendezvousDto>> getAllByMedecinAndPeriode(@PathVariable Integer medecinId,
-                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return ResponseEntity.ok(rendezvousService.getAllByMedecinAndPeriode(medecinId, startDate, endDate));
-    }
-
     @GetMapping("/all")
     public ResponseEntity<?> getAllRendezVous() {
         return ResponseEntity.ok(rendezvousService.getAllRendezVous());
@@ -76,6 +69,15 @@ public class RendezvousController {
     @PostMapping("/all/search")
     public ResponseEntity<List<RendezvousDto>> searchRendezVous(@RequestBody RendezvousSearchDto searchDTO) {
         return ResponseEntity.ok(rendezvousService.searchRendezVous(searchDTO));
+    }
+
+
+
+    @GetMapping("/medecin/{medecinId}/periode")
+    public ResponseEntity<List<RendezvousDto>> getAllByMedecinAndPeriode(@PathVariable Integer medecinId,
+                                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        return ResponseEntity.ok(rendezvousService.getAllByMedecinAndPeriode(medecinId, startDate, endDate));
     }
 
     @GetMapping("/medecin/{medecinId}/all")

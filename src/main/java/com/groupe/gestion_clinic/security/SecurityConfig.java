@@ -65,7 +65,7 @@ public class SecurityConfig {
                                         "/v3/api-docs/**",
                                         "/v3/api-docs.yaml").permitAll() // Autorise Swagger UI et OpenAPI
                         .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/api/medecin/**").hasAnyRole("MEDECIN","ADMIN")
+                        .requestMatchers("/api/medecin/**").hasAnyRole("MEDECIN","ADMIN","SECRETAIRE")
                         .requestMatchers("/api/secretaire/**").hasAnyRole("SECRETAIRE","MEDECIN","ADMIN")
                         .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE","MEDECIN","ADMIN")
                         .requestMatchers("/api/patients/**").hasAnyRole( "MEDECIN", "SECRETAIRE", "ADMIN")
