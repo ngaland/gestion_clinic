@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: clinic-postgres
+    environment:
+      POSTGRES_DB: gestion_clinic
+      POSTGRES_USER: clinic_user
+      POSTGRES_PASSWORD: clinic_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - clinic-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clinic_user -d gestion_clinic"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MinIO pour le stockage des fichiers
+  minio:
+    image: minio/minio:latest
+    container_name: clinic-minio
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - clinic-network
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # MailHog pour les tests d'email en développement
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: clinic-mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - clinic-network
+
+  # Application Spring Boot
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clinic-backend
+    environment:
+      # Profile Spring
+      ACTIVE_PROFILE: docker
+      
+      # Base de données
+      POSTGRES_SQL_HOST: postgres
+      POSTGRES_SQL_PORT: 5432
+      POSTGRES_SQL_DB: gestion_clinic
+      POSTGRES_SQL_USERNAME: clinic_user
+      POSTGRES_SQL_PASSWORD: clinic_password
+      
+      # MinIO
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: password123
+      MINIO_BUCKET_NAME: clinic-photos
+      
+      # Email (MailHog pour dev)
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      SMTP_SSL_TRUST: "*"
+      VERIFY_EMAIL_HOSt: http://localhost:8080
+      
+      # Serveur
+      SERVER_PORT: 8080
+      
+      # JVM Options
+      JAVA_OPTS: "-Xmx512m -Xms256m"
+    ports:
+      - "8080:8080"
+    networks:
+      - clinic-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - app_logs:/app/logs
+
+# Volumes persistants
+volumes:
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
+  app_logs:
+    driver: local
+
+# Réseau personnalisé
+networks:
+  clinic-network:
+    driver: bridge
