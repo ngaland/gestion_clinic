@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE","MEDECIN","ADMIN")
                         .requestMatchers("/api/patients/**").hasAnyRole( "MEDECIN", "SECRETAIRE", "ADMIN")
                         .requestMatchers("/api/photos/**").hasAnyRole("MEDECIN", "SECRETAIRE", "ADMIN")
+                        .requestMatchers("/api/chat/**").hasAnyRole("MEDECIN", "SECRETAIRE")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Pas de session HTTP

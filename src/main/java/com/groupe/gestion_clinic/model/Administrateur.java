@@ -7,9 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
 @DiscriminatorValue("ADMIN")
 @NoArgsConstructor
 public class Administrateur extends Utilisateur {
